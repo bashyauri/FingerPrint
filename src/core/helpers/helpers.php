@@ -1,4 +1,5 @@
 <?php
+
 /**
  * -=-<[ Bismillahirrahmanirrahim ]>-=-
  * Helper functions to access fingerprint service
@@ -20,7 +21,8 @@ WpOrg\Requests\Autoload::register();
  * (these are the fmds you should store in your database)
  * otherwise returns 'enrollment failed' as string
  */
-function enroll_fingerprint($pre_registered_fmd_array){
+function enroll_fingerprint($pre_registered_fmd_array)
+{
     $host = getenv('FP_CLIENT_SERVICE_HOST');
     $enrollment_url = "$host/coreComponents/enroll.php";
 
@@ -43,11 +45,12 @@ function enroll_fingerprint($pre_registered_fmd_array){
  * enrolled_index_finger and enrolled_middle_finger are
  * string of fmd coming from your database or any persistent
  * storage you've stored the the enrollment fmd
-*/
-function verify_fingerprint($pre_registered_fmd_string, $enrolled_fingers_array){
+ */
+function verify_fingerprint($pre_registered_fmd_string, $enrolled_fingers_array)
+{
     $host = getenv('FP_CLIENT_SERVICE_HOST');
     $verify_url = "$host/coreComponents/verify.php";
-    
+
     $data = [
         "data" => json_encode([
             "pre_enrolled_finger_data" => $pre_registered_fmd_string,
@@ -84,7 +87,8 @@ function verify_fingerprint($pre_registered_fmd_string, $enrolled_fingers_array)
  * 
  * the function returns true if is there is duplicate and false otherwise
  */
-function is_duplicate_fingerprint($pre_registered_fmd_string, $enrolled_hands_array){
+function is_duplicate_fingerprint($pre_registered_fmd_string, $enrolled_hands_array)
+{
     $host = getenv('FP_CLIENT_SERVICE_HOST');
     $is_duplicate_url = "$host/coreComponents/is_duplicate.php";
 
@@ -102,16 +106,18 @@ function is_duplicate_fingerprint($pre_registered_fmd_string, $enrolled_hands_ar
     return $response;
 }
 
-function make_request($url, $data){
-    
+function make_request($url, $data)
+{
+
     $headers = array('Content-Type' => 'application/x-www-form-urlencoded');
-    
+
     $response = WpOrg\Requests\Requests::post($url, $headers, $data);
     return $response->body;
 }
 
 
-function test_enroll(){
+function test_enroll()
+{
     global $fmd1;
     global $fmd2;
 
@@ -127,13 +133,14 @@ function test_enroll(){
     echo enroll_fingerprint($pre_reg_fmd_array);
 }
 
-function test_verify(){
+function test_verify()
+{
     global $fmd1;
     global $reg_fmd1;
     global $reg_fmd2;
 
     $pre_reg_fmd = $fmd1;
-    
+
     $enrolled_fingers = [
         "index_finger" => $reg_fmd1,
         "middle_finger" => $reg_fmd2
@@ -142,7 +149,8 @@ function test_verify(){
     echo verify_fingerprint($pre_reg_fmd, $enrolled_fingers);
 }
 
-function test_duplicate(){
+function test_duplicate()
+{
     global $fmd1;
     global $reg_fmd1;
 
@@ -177,4 +185,4 @@ $reg_fmd2 = "";
 // to test uncomment this lines
 // test_enroll();
 // test_verify();
-//test_duplicate();
+// test_duplicate();
